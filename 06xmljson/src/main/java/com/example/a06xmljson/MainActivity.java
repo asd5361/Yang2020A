@@ -17,6 +17,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     String xmldata = "<current>\n" +
@@ -420,11 +422,23 @@ public class MainActivity extends AppCompatActivity {
         }
         String presult = "book:\n";
 
-        for(int i=0; i<BooksArray.size(); i++){
-            SBooks abook = BooksArray.get(i);
-            presult += "저자" + abook.author + "제목:"+ abook.title + "가격"+ abook.price+"$ \n";
+        //Collections.sort(BooksArray);
+
+        // 제목 정렬 내림차순일때
+        Collections.sort(BooksArray,Collections.reverseOrder());
+//        for(int i=0; i<BooksArray.size(); i++){
+//            SBooks abook = BooksArray.get(i);
+//            if(abook.price <= 40.0f){
+//                presult += "저자" + abook.author + "제목:"+ abook.title + "가격"+ abook.price+"$ \n";
+//            }
+//        }
+        //for each문을 사용하여 재프로그램
+        for (SBooks abook :BooksArray) {
+            if (abook.price <= 40.0f) {
+                presult += "저자" + abook.author + "제목:" + abook.title + "가격" + abook.price + "$ \n";
+            }
         }
-        
+
         textView.setText(presult);
     }
 
