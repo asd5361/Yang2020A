@@ -62,8 +62,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public void parseJSONdate(String odata){
         Integer ihumidity=0, ipressure=0;
-        Double itemperature = 0.0d, lon=0.0d, lat=0.0d;
+        Double itemperature = 0.0d, dlong=0.0d, dlat=0.0d;
         String scounty = null;
+        Long udate = 0L;
+        SimpleDateFormat format1 = null;
+        Date date = null;
 
         if(odata == null){
             textView.setText("데이터 없음");
@@ -75,20 +78,19 @@ public class MainActivity extends AppCompatActivity {
             JSONObject jmain = jsonObject.getJSONObject("main");
             ihumidity = jmain.getInt("humidity");
             itemperature = jmain.getDouble("temp");
+            ipressure = jmain.getInt("pressure");
 
             JSONObject jsys = jsonObject.getJSONObject("sys");
             scounty = jsys.getString("country");
 
-            ipressure = jmain.getInt("pressure");
-
             JSONObject jcoord = jsonObject.getJSONObject("coord");
-            lon = jcoord.getDouble("lon");
-            lat = jcoord.getDouble("lat");
+            dlong = jcoord.getDouble("lon");
+            dlat = jcoord.getDouble("lat");
 
-            Long udate = jsonObject.getLong("dt");
-            Date date = new Date(udate*1000);
-            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-ddEHH:mm:ss");
-            updates.setText(dateformat.format(date));
+            udate = jsonObject.getLong("dt");
+            date = new Date(udate*1000);
+            format1 = new SimpleDateFormat("yyyy년 MM월 dd일 EHH:mm:ss");
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -96,9 +98,10 @@ public class MainActivity extends AppCompatActivity {
         }
         temperature.setText(itemperature.toString());
         humidity.setText(ihumidity.toString());
-        pressure.setText(ipressure.toString());
         country.setText(scounty);
-        location.setText("Lon : "+ lon + ", Lat :" + lat);
+        pressure.setText(ipressure.toString());
+        location.setText("경도 : "+ dlong + ", 위도 :" + dlat);
+        updates.setText(format1.format(date));
 
     }
 
